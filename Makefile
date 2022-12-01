@@ -1,4 +1,4 @@
-all: run
+
 
 kernel.bin: kernel_entry.o kernel.o
 	ld -m elf_i386 -o $@ -Ttext 0x1000 boot/$(word 1,$^) kernel/$(word 2,$^) --oformat binary
