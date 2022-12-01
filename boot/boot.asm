@@ -1,7 +1,5 @@
 	[org 0x7c00]
-
-	KERNEL_OFFSET equ 0x1000 	; The same one we used when linking the kernel
-
+	KERNEL_OFFSET equ 0x1000 	; The same one we used whe
 	mov [BOOT_DRIVE], dl ; Remember that the BIOS sets us the boot drive in 'dl' on boot
 	mov bp, 0x9000
 	mov sp, bp
@@ -18,16 +16,18 @@
 	%include "print_pm.asm"
 	%include "switch_pm.asm"
 	%include "boot_sect_disk.asm"
-
+	%include "print_hex.asm"
+	
 [bits 16]
 load_kernel:
 	mov bx, MSG_LOAD_KERNEL
 	call print_real
-
-	mov bx, KERNEL_OFFSET
-	mov dh, 2
-	mov dl, [BOOTDRIVE]
+	;; TODO: Implement Ports
+	mov bx, KERNEL_OFFSET ; Read from disk and store in 0x1000
+	mov dh, 16 ; Our future kernel will be larger, make this big
+	mov dl, [BOOT_DRIVE]
 	call disk_load
+	
 	ret
 	
 [bits 32]
@@ -35,7 +35,7 @@ BEGIN_PM:
 
 	mov ebx, MSG_PROT_MODE
 	call print_pm
-	
+	call KERNEL_OFFSET
 	jmp $
 
 	BOOT_DRIVE db 0
