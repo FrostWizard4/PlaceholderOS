@@ -1,4 +1,7 @@
 	[bits 32]
-	mov ebx, MSG_REAL_MODE
+	%include "print_pm.asm"
+	mov ebx, MSG_DEBUG
 	call print_pm
 	jmp $
+
+	MSG_DEBUG db "DEBUG", 0
