@@ -1,4 +1,4 @@
 	[bits 32]
-	[extern kernel_start]
+	[global kernel_start]	
 	call kernel_start
 	jmp $
