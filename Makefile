@@ -6,8 +6,8 @@ kernel.bin: kernel_entry.o kernel.o
 kernel_entry.o: 
 	cd boot && nasm kernel_entry.asm -f elf -o $@ && cd ../
 
-kernel.o: kernel.asm
-	nasm kernel/$< -f elf -o kernel/$@
+kernel.o: 
+	nasm kernel/kernel.asm -f elf -o kernel/$@
 
 kernel.dis: kernel.bin
 	ndisasm -b 32 $< > $@
