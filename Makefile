@@ -12,8 +12,8 @@ kernel.o: kernel.asm
 kernel.dis: kernel.bin
 	ndisasm -b 32 $< > $@
 
-boot.bin: boot.asm
-	cd boot && nasm $< -f bin -o $@ && cd ../
+boot.bin:
+	cd boot && nasm boot.asm -f bin -o $@ && cd ../
 
 os-image.bin: boot.bin kernel.bin
 	cat boot/$< $(word 2,$^) > $@
