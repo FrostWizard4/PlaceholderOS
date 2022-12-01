@@ -1,5 +1,5 @@
 	[bits 32]
-	%include "print_pm.asm"
+	[extern print_pm]
 	mov ebx, MSG_DEBUG
 	call print_pm
 	jmp $
