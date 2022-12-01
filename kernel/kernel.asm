@@ -1,5 +1,6 @@
 	%include "../drivers/ports.asm"
-
+dummy_point:
+	
 kernel_start:
 	pusha
 
