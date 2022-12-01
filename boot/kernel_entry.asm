@@ -1,7 +1,4 @@
 	[bits 32]
-	[extern print_pm]
-	mov ebx, MSG_DEBUG
-	call print_pm
+	[extern kernel_start]
+	call kernel_start
 	jmp $
-
-	MSG_DEBUG db "DEBUG", 0
