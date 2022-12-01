@@ -3,8 +3,8 @@ all: run
 kernel.bin: kernel_entry.o kernel.o
 	i386-elf-ld -o $@ -Ttext 0x1000 boot/$(word 1,$^) kernel/$(word 2,$^) --oformat binary
 
-kernel_entry.o: kernel_entry.asm
-	cd boot && nasm boot/$< -f elf -o boot/$@ && cd ../
+kernel_entry.o: 
+	cd boot && nasm boot/kernel_entry.asm -f elf -o boot/$@ && cd ../
 
 kernel.o: kernel.asm
 	nasm kernel/$< -f elf -o kernel/$@
