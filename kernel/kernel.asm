@@ -1,4 +1,7 @@
+	[extern print_at_pm]
 	%include "../boot/print_at_pm.asm"
+	
+[bits 32]
 kernel_start:
 	pusha
 
