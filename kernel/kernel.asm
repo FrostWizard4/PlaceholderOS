@@ -1,5 +1,4 @@
-	[extern print_at_pm]
-	%include "../boot/print_at_pm.asm"
+	%include "../kernel/print_at_pm.asm"
 	
 [bits 32]
 kernel_start:
@@ -30,6 +29,8 @@ kernel_start:
 	mov ecx, ebx
 	mov ebx, MSG_LOADED
 	call print_at_pm
+
+	jmp $
 	
 	popa
 	ret
