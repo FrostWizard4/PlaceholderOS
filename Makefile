@@ -1,3 +1,5 @@
+build: os-image.bin
+
 debug: os-image.bin kernel.elf
 	qemu-system-i386 -s -S -fda $< & gdb -ex "target remote localhost:1234" -ex "symbol-file kernel.elf"
 
