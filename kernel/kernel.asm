@@ -1,5 +1,5 @@
-	%include "../kernel/print_at_pm.asm"
-	
+	%include "print_at_pm.asm"
+[global kernel_start]	
 [bits 32]
 kernel_start:
 	pusha

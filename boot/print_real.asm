@@ -1,8 +1,9 @@
 
-
 print_real:
 	pusha
-
+	mov bp, sp
+	mov bx, [bp+8]
+	
 print_real_loop:
 	mov al, [bx]
 
@@ -17,5 +18,6 @@ print_real_loop:
 	jmp print_real_loop
 
 print_real_done:
+	mov sp, bp
 	popa
 	ret

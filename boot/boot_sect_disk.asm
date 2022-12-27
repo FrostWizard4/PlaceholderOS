@@ -6,7 +6,7 @@ disk_load:
 	;;  so we will overwrite our input parameters from 'dx'. Let's save it
 	;;  to the stack for later use.
 	push dx
-
+	
 	mov ah, 0x02 	; ah <- int 0x13 function. 0x02 = 'read'
 	mov al, dh	; al <- number of sectors to read (0x01 .. 0x80)
 	mov cl, 0x02 	; cl <- sector (0x01 .. 0x11)

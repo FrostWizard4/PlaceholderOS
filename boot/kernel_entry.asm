@@ -1,5 +1,4 @@
 	[bits 32]
-	[global kernel_start]
-	%include "../kernel/kernel.asm"
+	[extern kernel_start]
 	call kernel_start
 	jmp $

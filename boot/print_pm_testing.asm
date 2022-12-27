@@ -7,9 +7,8 @@
 print_pm:
 	pusha
 	mov edx, VIDEO_MEMORY	; set EDX to the start of video memory
- 	
-print_string_pm_loop:
 
+print_string_pm_loop:
 	mov al, [ebx]		; Store the character at EBX in AL
 	mov ah, WHITE_ON_BLACK	; Store the attributes in AH
 
