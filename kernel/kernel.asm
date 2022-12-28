@@ -1,38 +1,29 @@
-	%include "print_at_pm.asm"
-[global kernel_start]	
-[bits 32]
+	[bits 32]
+	[global kernel_start]	
 kernel_start:
-	pusha
+	pushad
+	mov ebp, esp
 
-	mov dx, 14
-	mov eax, 0x3d4
-	out dx, eax 		; Request Byte 14 from 0x3d4
-
-	mov dx, 0x3d5
-	in eax, dx		; Read a byte from 0x3d5, store in AL
-	mov ebx, eax		; Move AL into BX so we can use it, with Sign-Extension
-	shl ebx, 8		; Left shift BX by 8
-
-	mov dx, 15
-	mov eax, 0x3d4
-	out dx, eax		; Request Byte 15 from 0x3d4
-
-	mov dx, 0x3d5
-	in eax, dx		; Read a byte from 0x3d5 store in AL
-
-	mov ecx, eax		; Move AL into CX, with Sign-Extension
-	add ebx, ecx		; add CX to BX
-
-	rol ebx, 1		; Rotate BX 1 to the left
-
-	;; Now that we have the offset we need (BX), we just need to pass that into print_at_pm
-	mov ecx, ebx
+	;; C Example:
+	;; port_byte_out(0x3d4, 14);
+	;; int position = port_byte_in(0x3d5);
+	;; position = position << 8;
+	;; port_byte_out(0x3d4, 15);
+	;; position += port_byte_in(0x3d5);
+	;; int offset_from_vga = position * 2;
+	;; offset_from_vga is the cursor position!
+	
+	mov eax, 0x520		; Intermediary until I implement ports
 	mov ebx, MSG_LOADED
 	call print_at_pm
-
-	jmp $
 	
-	popa
+	
+	jmp $
+
+	mov esp, ebp
+	popad
 	ret
 
 	MSG_LOADED db "Should be loaded!", 0
+
+	%include "print_at_pm.asm"

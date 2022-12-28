@@ -1,13 +1,14 @@
 	[bits 32]
 	;;  Constants!
-	VIDEO_MEMORY equ 0xb8002 ; Memory Address for the current VGA Mode
-	WHITE_ON_BLACK equ 0x0f	 ; Color of text and background
+	VIDEO_MEMORY equ 0xb8000 ; Memory Address for the current VGA Mode
+	WHITE_ON_BLACK equ 0x2f	 ; Color of text and background
 
 	;;  prints a null-terminated string pointed to by EDX
 print_at_pm:
-	pusha
+	pushad
+	mov ebp, esp
 	mov edx, VIDEO_MEMORY	; set EDX to the start of video memory
-	add edx, ecx
+	add edx, eax
 	
 print_string_pm_at_loop:
 	mov al, [ebx]		; Store the character at EBX in AL
@@ -24,5 +25,6 @@ print_string_pm_at_loop:
 	jmp print_string_pm_at_loop
 
 print_string_pm_at_done:
-	popa
+	mov esp, ebp
+	popad
 	ret
