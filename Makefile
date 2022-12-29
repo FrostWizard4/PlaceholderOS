@@ -25,5 +25,21 @@ kernel_entry.o: boot/kernel_entry.asm
 	nasm $< -f bin -I 'boot/' -g -o $@
 
 clean:
-	rm -rf *.o *.bin os-image *.elf
+	rm -rf *.o 
 	rm -rf boot/*.o boot/*.bin kernel/*.o kernel/*.bin
+
+dangerclean:
+	rm -rf *.o *.bin *.elf
+	rm -rf boot/*.o boot/*.bin kernel/*.o kernel/*.bin
+
+dependencies:
+	sudo apt-get install -y nasm qemu-system-i386
+
+info:
+	$(info make dependencies: apt-get dependencies)
+	$(info make: build OS binary file)
+	$(info make run: run qemu with the OS binary)
+	$(info make debug: debug OS binary with qemu and gdb)
+	$(info make clean: clean all intermediary build files)
+	$(info make dangerclean: clean *ALL* build files)
+
