@@ -1,36 +1,38 @@
-build: os-image.bin
+build: build-files/os-image.bin
 
-debug: os-image.bin kernel.elf
-	qemu-system-i386 -s -S -fda $< & gdb -ex "target remote localhost:1234" -ex "symbol-file kernel.elf"
+build-files:
+	mkdir -p $@
 
-run: os-image.bin
-	qemu-system-i386 -s -fda $< 
+debug: build-files/os-image.bin build-files/kernel.elf
+	qemu-system-i386 -s -S -fda $< & gdb -ex "target remote localhost:1234" -ex "symbol-file build-files/kernel.elf"
 
-kernel.elf: kernel.o kernel_entry.o 
+run: build-files/os-image.bin
+	qemu-system-i386 -s -fda $<
+
+build-files/kernel.elf: build-files/kernel.o build-files/kernel_entry.o
 	ld -m elf_i386 -o $@ -Ttext 0x1000 $^
 
-os-image.bin: boot/boot.bin kernel.bin
-	cat $^ > os-image.bin
+build-files/os-image.bin: boot/boot.bin build-files/kernel.bin
+	cat $^ > $@
 
-kernel.bin: kernel.o kernel_entry.o 
-	ld -m elf_i386 -o kernel.bin -Ttext 0x1000 $^ --oformat binary
+build-files/kernel.bin: build-files/kernel.o build-files/kernel_entry.o
+	ld -m elf_i386 -o $@ -Ttext 0x1000 $^ --oformat binary
 
-kernel.o: kernel/kernel.asm
+build-files/kernel.o: kernel/kernel.asm
 	nasm $< -f elf -I 'kernel/' -g -o $@
 
-kernel_entry.o: boot/kernel_entry.asm
+build-files/kernel_entry.o: boot/kernel_entry.asm
 	nasm $< -f elf -I 'boot/' -g -o $@
 
 %.bin: %.asm
 	nasm $< -f bin -I 'boot/' -g -o $@
 
 clean:
-	rm -rf *.o 
-	rm -rf boot/*.o boot/*.bin kernel/*.o kernel/*.bin
+	cd build-files
+	rm -i -- !(file.txt)
 
 dangerclean:
-	rm -rf *.o *.bin *.elf
-	rm -rf boot/*.o boot/*.bin kernel/*.o kernel/*.bin
+
 
 dependencies:
 	sudo apt-get install -y nasm qemu-system-i386
@@ -42,4 +44,3 @@ info:
 	$(info make debug: debug OS binary with qemu and gdb)
 	$(info make clean: clean all intermediary build files)
 	$(info make dangerclean: clean *ALL* build files)
-
