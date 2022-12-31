@@ -20,7 +20,7 @@ BUILD_DIR	:= $(OUT_DIR)/build
 all: dir $(BIN_DIR)/os-image.bin $(BIN_DIR)/kernel.elf
 
 debug: dir $(BIN_DIR)/os-image.bin $(BIN_DIR)/kernel.elf
-	qemu-system-i386 -s -S -fda $(word 2, $^) & gdb -ex "target remote localhost:1234" -ex "symbol-file build/kernel.elf"
+	qemu-system-i386 -s -S -fda $(word 2, $^) & gdb -ex "target remote localhost:1234" -ex "symbol-file out/bin/kernel.elf"
 
 run: dir $(BIN_DIR)/os-image.bin
 	qemu-system-i386 -s -fda $(word 2, $^)

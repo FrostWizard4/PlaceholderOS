@@ -14,25 +14,27 @@ _start:
 	;; offset_from_vga is the cursor position!
 
   mov dx, 0x3d4
-  mov al, 14
+  mov al, 14                    ; port_byte_out(0x3d4, 14);
   out dx, al
 
   mov dx, 0x3d5
-  in al, dx
-  mov cl, al
+  in al, dx                     ; ebx = port_byte_in(0x3d5)
+  movzx ebx, al
 
-  shl cl, 8
+  shl ebx, 8                    ; shift ebx left 8 times
 
   mov dx, 0x3d4
-  mov al, 15
+  mov al, 15                    ; port_byte_out(0x3d4, 15)
   out dx, al
 
   mov dx, 0x3d5
-  in al, dx
-  add cl, al
+  in al, dx                     ; ecx = port_byte_in(0x3d5)
+  movzx ecx, al
+  add ebx, ecx                  ; ebx += ecx
 
-  movzx eax, cl	; Intermediary until I implement ports
-  shl eax, 1    ; Multiply offset by 2
+  shl ebx, 1    ; Multiply offset by 2
+
+  mov eax, ebx
 	mov ebx, MSG_LOADED
 	call print_at_pm
 
