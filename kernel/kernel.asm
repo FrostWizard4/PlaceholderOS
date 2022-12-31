@@ -1,5 +1,5 @@
 	[bits 32]
-	[global _start]	
+	[global _start]
 _start:
 	pushad
 	mov ebp, esp
@@ -13,7 +13,26 @@ _start:
 	;; int offset_from_vga = position * 2;
 	;; offset_from_vga is the cursor position!
 
-	mov eax, 0x520		; Intermediary until I implement ports
+  mov dx, 0x3d4
+  mov al, 14
+  out dx, al
+
+  mov dx, 0x3d5
+  in al, dx
+  mov cl, al
+
+  shl cl, 8
+
+  mov dx, 0x3d4
+  mov al, 15
+  out dx, al
+
+  mov dx, 0x3d5
+  in al, dx
+  add cl, al
+
+  movzx eax, cl	; Intermediary until I implement ports
+  shl eax, 1    ; Multiply offset by 2
 	mov ebx, MSG_LOADED
 	call print_at_pm
 

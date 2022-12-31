@@ -9,7 +9,7 @@ print_at_pm:
 	mov ebp, esp
 	mov edx, VIDEO_MEMORY	; set EDX to the start of video memory
 	add edx, eax
-	
+
 print_string_pm_at_loop:
 	mov al, [ebx]		; Store the character at EBX in AL
 	mov ah, WHITE_ON_BLACK	; Store the attributes in AH
