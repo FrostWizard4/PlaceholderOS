@@ -1,4 +1,5 @@
 	[bits 32]
+  [global print_at_pm]
 	;;  Constants!
 	VIDEO_MEMORY equ 0xb8000 ; Memory Address for the current VGA Mode
 	WHITE_ON_BLACK equ 0x2f	 ; Color of text and background

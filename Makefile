@@ -25,13 +25,13 @@ debug: dir $(BIN_DIR)/os-image.bin $(BIN_DIR)/kernel.elf
 run: dir $(BIN_DIR)/os-image.bin
 	qemu-system-i386 -s -fda $(word 2, $^)
 
-$(BIN_DIR)/kernel.elf: $(BUILD_DIR)/kernel.o $(BUILD_DIR)/kernel_entry.o
+$(BIN_DIR)/kernel.elf: $(BUILD_DIR)/kernel.o $(BUILD_DIR)/kernel_entry.o $(BUILD_DIR)/screen.o $(BUILD_DIR)/print_at_pm.o
 	ld -m elf_i386 -o $@ -Ttext 0x1000 $^
 
 $(BIN_DIR)/os-image.bin: boot/boot.bin $(BUILD_DIR)/kernel.bin
 	cat $^ > $@
 
-$(BUILD_DIR)/kernel.bin: $(BUILD_DIR)/kernel.o $(BUILD_DIR)/kernel_entry.o
+$(BUILD_DIR)/kernel.bin: $(BUILD_DIR)/kernel.o $(BUILD_DIR)/kernel_entry.o $(BUILD_DIR)/screen.o $(BUILD_DIR)/print_at_pm.o
 	ld -m elf_i386 -o $@ -Ttext 0x1000 $^ --oformat binary
 
 $(BUILD_DIR)/kernel.o: kernel/kernel.asm
@@ -39,6 +39,12 @@ $(BUILD_DIR)/kernel.o: kernel/kernel.asm
 
 $(BUILD_DIR)/kernel_entry.o: boot/kernel_entry.asm
 	nasm $< -f elf -I 'boot/' -g -o $@
+
+$(BUILD_DIR)/screen.o: drivers/screen.asm
+	nasm $< -f elf -I 'drivers/' -g -o $@
+
+$(BUILD_DIR)/print_at_pm.o: kernel/print_at_pm.asm
+	nasm $< -f elf -I 'kernel/' -g -o $@
 
 %.bin: %.asm
 	nasm $< -f bin -I 'boot/' -g -o $@
